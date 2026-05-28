@@ -42,7 +42,7 @@ function Hero() {
   useEffect(() => {
     const upd = () => {
       const d = new Date();
-      const opts = { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Europe/Rome" };
+      const opts = { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
       setTime(d.toLocaleTimeString("en-GB", opts));
     };
     upd();
@@ -55,10 +55,10 @@ function Hero() {
       <HeroOrb />
       <div className="container hero-grid">
         <div className="hero-corner hero-corner-tl">
-          <span className="eyebrow">est. 2024 — based everywhere</span>
+          <span className="eyebrow">nexora studio — digital innovation</span>
         </div>
         <div className="hero-corner hero-corner-tr">
-          <span className="hero-time"><span className="hero-time-dot" /> rome / {time} cet</span>
+          <span className="hero-time"><span className="hero-time-dot" /> available worldwide / {time}</span>
         </div>
 
         <h1 className="h-display hero-title">
@@ -68,8 +68,9 @@ function Hero() {
         </h1>
 
         <p className="hero-sub reveal in delay-3">
-          A two-person studio building websites, platforms, systems and creative
-          digital solutions for founders, startups and curious teams.
+          Nexora Studio — a two-person digital innovation studio building websites,
+          mobile apps, platforms and smart digital solutions for founders,
+          startups and ambitious teams.
         </p>
 
         <div className="hero-cta reveal in delay-4">
@@ -84,9 +85,9 @@ function Hero() {
         </div>
 
         <div className="hero-foot">
-          <HeroMetric value="48" label="projects shipped" />
+          <HeroMetric value="4+" label="projects shipped" />
           <HeroMetric value="2" label="founders. one studio." />
-          <HeroMetric value="12" label="industries served" />
+          <HeroMetric value="3" label="industries served" />
           <HeroMetric value="∞" label="ideas in motion" />
         </div>
 

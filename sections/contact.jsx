@@ -68,9 +68,8 @@ function Contact() {
                 <div className="contact-sent-dot" />
                 <h3 className="h-3">Thanks — got it.</h3>
                 <p>
-                  We read every message ourselves. Expect a reply from Alessio
-                  or Nora within one working day, usually with a 15-minute
-                  call offer attached.
+                  We read every message ourselves. Expect a reply from Mehdi
+                  or Ahmed within one working day, usually with a quick call offer attached.
                 </p>
                 <button className="btn btn-ghost" onClick={() => { setSent(false); setEmail(""); setIdea(""); }} data-cursor="hover">
                   Send another <span className="arrow"><Arrow /></span>
@@ -82,8 +81,8 @@ function Contact() {
           <aside className="contact-side reveal delay-1">
             <div className="contact-direct">
               <span className="eyebrow">direct line</span>
-              <a className="contact-mail" href="mailto:hello@studio-digital.co" data-cursor="hover">
-                hello@studio-digital.co
+              <a className="contact-mail" href="mailto:hello@nexora-studio.com" data-cursor="hover">
+                hello@nexora-studio.com
               </a>
             </div>
 
@@ -110,9 +109,9 @@ function Contact() {
             <div className="contact-block">
               <span className="eyebrow">booking</span>
               <p className="contact-note">
-                We take on roughly six engagements per year. Next opening is
-                <em className="serif"> mid Q3 2026</em>. Brief us early — we
-                hold spots for ideas we love.
+                We are currently open for new projects.
+                <em className="serif"> Let's talk</em> — send us your idea and
+                we'll get back to you within 24 hours.
               </p>
             </div>
           </aside>
@@ -128,14 +127,14 @@ function Footer() {
       <div className="container">
         <div className="footer-row">
           <div className="footer-mega">
-            studio<br />
-            <span className="serif">digital</span><span style={{ color: "var(--accent)" }}>.</span>
+            nexora<br />
+            <span className="serif">studio</span><span style={{ color: "var(--accent)" }}>.</span>
           </div>
           <div className="footer-sig">
             <span className="eyebrow">made by two, for many</span>
             <p className="footer-sig-body">
-              A small independent studio working from Rome &amp; Lisbon,
-              available worldwide. Booking 2026.
+              A small independent digital innovation studio, available worldwide.
+              Open for new projects — let's build something great together.
             </p>
           </div>
         </div>
@@ -165,7 +164,7 @@ function Footer() {
           <div>
             <h5>colophon</h5>
             <p>Space Grotesk · Instrument Serif · JetBrains Mono. Built in the open.</p>
-            <p style={{ marginTop: 12 }}>© 2026 studio digital</p>
+            <p style={{ marginTop: 12 }}>© 2025 Nexora Studio</p>
           </div>
         </div>
       </div>

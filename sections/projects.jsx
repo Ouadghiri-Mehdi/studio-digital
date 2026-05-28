@@ -5,71 +5,91 @@ const { useState: useStateProj } = React;
 
 const PROJECTS = [
   {
-    id: "halo",
-    client: "Halo Labs",
-    title: "An operating system for indie research teams.",
+    id: "ecommerce",
+    client: "E-Commerce App",
+    title: "A full e-commerce experience, web and mobile.",
     year: "2025",
-    tags: ["Platform", "AI", "Design System"],
-    summary: "Took a Notion-plus-spreadsheets workflow and turned it into a multi-tenant research OS in 14 weeks. Shipped with a custom design system, agent layer and a billing stack.",
+    tags: ["Web", "Mobile", "E-Commerce"],
+    liveUrl: "#", // → remplace par le vrai lien
+    screenshot: null, // → remplace par le chemin de l'image ex: "screenshots/ecommerce.png"
+    summary: "A complete e-commerce platform built for a seamless shopping experience — product catalog, cart, payments and order management, all in one.",
     metrics: [
-      { v: "−71%", l: "time-to-insight" },
-      { v: "3.2×", l: "weekly active use" },
-      { v: "14w", l: "to first revenue" },
+      { v: "Web", l: "& mobile" },
+      { v: "Full", l: "stack build" },
+      { v: "Live", l: "product" },
     ],
-    palette: ["oklch(0.72 0.18 245)", "oklch(0.55 0.16 245)", "oklch(0.18 0.01 250)"],
+    palette: ["oklch(0.78 0.18 50)", "oklch(0.58 0.16 50)", "oklch(0.18 0.01 55)"],
   },
   {
-    id: "atelier",
-    client: "Atelier Norte",
-    title: "Editorial commerce for a 40-year-old furniture house.",
+    id: "madrassti",
+    client: "Madrassti",
+    title: "A digital platform reimagining how students learn.",
     year: "2025",
-    tags: ["Brand", "Web", "CMS"],
-    summary: "Rebrand, full digital system and a headless commerce experience that moved them from PDF catalogues to a living, story-led site.",
+    tags: ["EdTech", "Platform", "Web"],
+    liveUrl: "#", // → remplace par le vrai lien
+    screenshot: null, // → remplace par le chemin de l'image
+    summary: "Madrassti is an educational digital platform connecting students and instructors. Built for accessibility, engagement and real learning outcomes.",
     metrics: [
-      { v: "+248%", l: "qualified inquiries" },
-      { v: "0.6s", l: "median LCP" },
-      { v: "39", l: "rooms reshot" },
+      { v: "EdTech", l: "platform" },
+      { v: "Web", l: "app" },
+      { v: "Live", l: "product" },
     ],
-    palette: ["oklch(0.78 0.13 75)", "oklch(0.55 0.12 75)", "oklch(0.18 0.01 70)"],
+    palette: ["oklch(0.72 0.18 245)", "oklch(0.52 0.16 245)", "oklch(0.18 0.01 250)"],
   },
   {
-    id: "north",
-    client: "Northbound",
-    title: "Trip planning that feels like writing a letter.",
+    id: "profnum",
+    client: "Prof Num",
+    title: "A professional digital mobile application.",
     year: "2024",
-    tags: ["Product", "AI", "Mobile"],
-    summary: "A travel concierge app for a small luxury operator. Conversational planning, agent-assisted itineraries and a calm interface that hides the model.",
+    tags: ["Mobile", "App", "Professional"],
+    liveUrl: "#", // → remplace par le vrai lien
+    screenshot: null, // → remplace par le chemin de l'image
+    summary: "A professional digital tool delivered as a mobile application — built to solve a real workflow problem and designed for daily use.",
     metrics: [
-      { v: "92%", l: "bookings retained" },
-      { v: "4.9★", l: "app store rating" },
-      { v: "6", l: "languages live" },
+      { v: "Mobile", l: "application" },
+      { v: "iOS", l: "& Android" },
+      { v: "Shipped", l: "product" },
     ],
-    palette: ["oklch(0.72 0.18 295)", "oklch(0.55 0.16 295)", "oklch(0.18 0.01 290)"],
+    palette: ["oklch(0.72 0.18 295)", "oklch(0.52 0.16 295)", "oklch(0.18 0.01 290)"],
   },
   {
-    id: "rover",
-    client: "Rover Finance",
-    title: "Treasury software for founders who hate spreadsheets.",
+    id: "reabiliti",
+    client: "Reabiliti",
+    title: "An industrial platform for rehabilitation management.",
     year: "2024",
-    tags: ["SaaS", "Fintech", "Platform"],
-    summary: "From pitch deck to live product. Designed the entire surface, built the engineering and shipped an MVP that closed their seed.",
+    tags: ["Industrial", "Platform", "Web"],
+    liveUrl: "#", // → remplace par le vrai lien
+    screenshot: null, // → remplace par le chemin de l'image
+    summary: "Reabiliti is an industrial project tackling rehabilitation management with a digital solution — streamlining processes that were previously manual and fragmented.",
     metrics: [
-      { v: "$4.2M", l: "round closed" },
-      { v: "11w", l: "to MVP" },
-      { v: "32", l: "design tokens" },
+      { v: "Industrial", l: "sector" },
+      { v: "Web", l: "platform" },
+      { v: "Shipped", l: "product" },
     ],
-    palette: ["oklch(0.85 0.16 145)", "oklch(0.55 0.14 145)", "oklch(0.18 0.01 150)"],
+    palette: ["oklch(0.72 0.18 175)", "oklch(0.52 0.16 175)", "oklch(0.18 0.01 175)"],
   },
 ];
 
 function ProjectMock({ p }) {
-  // Stylized abstract mock — gradient + grid + chrome
   const [a, b, c] = p.palette;
+  if (p.screenshot) {
+    return (
+      <div className="proj-mock" aria-hidden="true">
+        <div className="proj-mock-chrome">
+          <span /><span /><span />
+          <span className="proj-mock-url">{p.client.toLowerCase().replace(/\s+/g, "")}</span>
+        </div>
+        <div className="proj-mock-surface" style={{ padding: 0, overflow: "hidden" }}>
+          <img src={p.screenshot} alt={p.client} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="proj-mock" aria-hidden="true">
       <div className="proj-mock-chrome">
         <span /><span /><span />
-        <span className="proj-mock-url">{p.client.toLowerCase().replace(/\s+/g, "")}.studio</span>
+        <span className="proj-mock-url">{p.client.toLowerCase().replace(/\s+/g, "")}</span>
       </div>
       <div
         className="proj-mock-surface"
@@ -134,11 +154,11 @@ function Projects() {
           </div>
           <div>
             <h2 className="h-section">
-              Recent <em className="serif">transformations</em>.
+              Our <em className="serif">work</em> speaks.
             </h2>
             <p className="lede">
-              A small set of recent ships. Each began as a sentence, a sketch or a
-              spreadsheet and ended as a live product.
+              A selection of projects we built from scratch. Each one started
+              as an idea and ended as a live digital product.
             </p>
           </div>
         </div>
@@ -188,9 +208,20 @@ function Projects() {
               ))}
             </div>
 
-            <a href="#contact" className="btn btn-ghost proj-cta" data-cursor="hover">
-              Read the case study <span className="arrow"><Arrow /></span>
-            </a>
+            <div className="proj-cta-row" style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              {p.liveUrl && p.liveUrl !== "#" ? (
+                <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary proj-cta" data-cursor="hover">
+                  View live <span className="arrow"><Arrow /></span>
+                </a>
+              ) : (
+                <span className="btn btn-primary proj-cta is-disabled" style={{ opacity: 0.4, cursor: "default" }}>
+                  Link coming soon
+                </span>
+              )}
+              <a href="#contact" className="btn btn-ghost proj-cta" data-cursor="hover">
+                Start a project <span className="arrow"><Arrow /></span>
+              </a>
+            </div>
           </div>
         </div>
       </div>

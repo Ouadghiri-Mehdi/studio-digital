@@ -89,7 +89,7 @@ function Nav() {
       <div className="nav-inner">
         <a href="#hero" className="nav-brand" data-cursor="hover">
           <span className="nav-brand-dot" />
-          studio digital
+          nexora studio
         </a>
         <div className="nav-links">
           <a className="nav-link" href="#studio">Studio</a>
@@ -130,7 +130,7 @@ function useReveal() {
 
 // ---- Marquee divider
 function Marquee() {
-  const items = ["websites", "platforms", "branding", "ui · ux", "ai integration", "automation", "startup MVPs", "design systems", "creative direction"];
+  const items = ["websites", "mobile apps", "branding", "ui · ux", "ai integration", "automation", "startup building", "digital platforms", "e-commerce"];
   const row = (key) => (
     <div className="marquee-track" key={key}>
       {items.map((s, i) => <span key={i} className="marquee-item">{s}</span>)}

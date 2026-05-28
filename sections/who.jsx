@@ -38,9 +38,10 @@ function WhoWeAre() {
               <br />any idea you can describe.
             </h2>
             <p className="lede">
-              We are creative developers, problem solvers and designers focused on
-              the moment an idea becomes real. Together we help individuals,
-              startups and teams turn rough sketches into shipped digital products.
+              We are creative developers and designers obsessed with the moment
+              an idea becomes real. At Nexora Studio, we help individuals,
+              startups and teams turn rough concepts into shipped digital products —
+              web, mobile and beyond.
             </p>
           </div>
         </div>
@@ -48,27 +49,27 @@ function WhoWeAre() {
         <div className="founders">
           <FounderCard
             idx={1}
-            initials="A.M"
-            name="Alessio Marini"
-            role="design + brand"
-            bio="Spent a decade designing for studios in Milan and Berlin before falling for the loop between code and craft. Leads brand systems, UI and the visual half of the studio."
-            focus={["interface design", "brand systems", "motion direction", "creative review"]}
+            initials="M.O"
+            name="Mehdi Ouadghiri"
+            role="engineering + product"
+            bio="Full-stack developer with a passion for building digital products that solve real problems. Leads engineering, product architecture and the technical direction of the studio."
+            focus={["full-stack development", "mobile applications", "platform architecture", "startup building"]}
           />
           <FounderCard
             idx={2}
-            initials="N.R"
-            name="Nora Rinaldi"
-            role="engineering + systems"
-            bio="Ex-product engineer who has shipped tools for fintech, media and AI startups. Owns architecture, performance and the unglamorous parts that keep the lights on."
-            focus={["full-stack engineering", "platform architecture", "AI integration", "automation"]}
+            initials="A.F"
+            name="Ahmed Fall"
+            role="design + brand"
+            bio="Digital designer focused on crafting interfaces that are both beautiful and functional. Leads UI/UX, brand systems and the visual identity of every project we ship."
+            focus={["UI/UX design", "brand identity", "design systems", "creative direction"]}
           />
         </div>
 
         <div className="who-pillars">
           {[
             { k: "approach", v: "Small team, full ownership. We are the people who pitch, design, build and ship — no handoffs, no agency middle layer." },
-            { k: "method", v: "Strategy and craft as one loop. We move from idea to interface to working software in weeks, not quarters." },
-            { k: "promise", v: "If you can describe it, we can prototype it. If it works in a prototype, we can ship it for real." },
+            { k: "method", v: "From idea to interface to working software. We move fast without cutting corners, in weeks not quarters." },
+            { k: "promise", v: "If you can describe it, we can build it. Web, mobile, platform or brand — we make ideas real." },
           ].map((p, i) => (
             <div key={p.k} className={`who-pillar reveal delay-${i + 1}`}>
               <span className="chip">{p.k}</span>
