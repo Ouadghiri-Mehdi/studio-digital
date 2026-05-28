@@ -35,7 +35,7 @@ function Process() {
         <ol className="proc-rail reveal" role="list">
           <div className="proc-line" aria-hidden="true" />
           {PROCESS.map((p, i) => (
-            <li key={p.n} className={`proc-node delay-${(i % 4) + 1} reveal`}>
+            <li key={p.n} className={`proc-node delay-${(i % 4) + 1} reveal`} data-num={p.n}>
               <div className="proc-node-head">
                 <span className="proc-dot" />
                 <span className="proc-num">{p.n}</span>

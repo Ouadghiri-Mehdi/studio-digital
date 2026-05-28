@@ -15,7 +15,7 @@ function Contact() {
         <div className="contact-head reveal">
           <span className="eyebrow">07 — contact</span>
           <h2 className="h-section contact-title">
-            Have an idea? <em className="serif">Let's</em> build it together.
+            Have an idea? <em>Let's</em> build it.
           </h2>
         </div>
 
