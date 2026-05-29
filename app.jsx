@@ -175,11 +175,67 @@ function Marquee() {
   );
 }
 
-// ---- Background
+// ---- Animated particle network background
 function BgCanvas() {
+  const canvasRef = useRefApp(null);
+
+  useEffectApp(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let raf, W, H, pts;
+
+    const resize = () => {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    };
+
+    const init = () => {
+      resize();
+      pts = Array.from({ length: 72 }, () => ({
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+      }));
+    };
+
+    const tick = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < pts.length; i++) {
+        const a = pts[i];
+        a.x += a.vx;  a.y += a.vy;
+        if (a.x < 0 || a.x > W) a.vx *= -1;
+        if (a.y < 0 || a.y > H) a.vy *= -1;
+        for (let j = i + 1; j < pts.length; j++) {
+          const b = pts[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 170) {
+            ctx.strokeStyle = `rgba(74,222,128,${(1 - d / 170) * 0.2})`;
+            ctx.lineWidth = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        ctx.fillStyle = "rgba(74,222,128,0.45)";
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    init();
+    tick();
+    window.addEventListener("resize", init);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", init); };
+  }, []);
+
   return (
     <div className="bg-canvas">
-      <div className="bg-grid" />
+      <canvas ref={canvasRef} className="bg-particles" />
       <div className="bg-noise" />
     </div>
   );
