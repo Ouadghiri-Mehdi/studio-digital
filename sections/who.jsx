@@ -1,13 +1,13 @@
 /* eslint-disable */
 // Who We Are + founders
 
-function FounderCard({ idx, photo, initials, name, role, bio, focus }) {
+function FounderCard({ idx, photo, initials, name, role, bio, focus, photoStyle }) {
   return (
     <div className="founder-card reveal" data-cursor="hover">
       <div className="founder-mug">
         {photo ? (
           <>
-            <img src={photo} alt={name} className="founder-photo" />
+            <img src={photo} alt={name} className="founder-photo" style={photoStyle} />
             <div className="founder-photo-overlay" />
           </>
         ) : (
@@ -63,6 +63,7 @@ function WhoWeAre() {
             role="full-stack · AI & automation"
             bio="Full-stack engineer with a strong focus on AI-powered systems and automation. Leads product architecture, backend and frontend development — and brings innovation and creativity to every solution built."
             focus={["Full-Stack Development", "AI & Automation", "Innovation", "Creativity"]}
+            photoStyle={{ transform: "scale(1.25)", transformOrigin: "center 8%" }}
           />
           <FounderCard
             idx={2}
@@ -72,6 +73,7 @@ function WhoWeAre() {
             role="full-stack · AI development"
             bio="Full-stack engineer specialized in AI development and innovative digital creation. Builds scalable systems and crafts the experiences that turn ambitious ideas into live, working products."
             focus={["Full-Stack Development", "AI Development", "Innovation", "Creation"]}
+            photoStyle={{ transform: "scale(1.9)", transformOrigin: "center 18%" }}
           />
         </div>
 
