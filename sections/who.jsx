@@ -66,7 +66,7 @@ function WhoWeAre() {
           />
           <FounderCard
             idx={2}
-            photo="assets/fall.jfif"
+            photo="assets/fall.png"
             initials="A.F"
             name="Ahmed Fall"
             role="full-stack · AI development"
