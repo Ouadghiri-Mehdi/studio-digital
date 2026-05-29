@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GestDoc Académique — Design UI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B3E;
+    --navy-mid: #162553;
+    --royal: #1E40AF;
+    --royal-light: #2563EB;
+    --sky: #60A5FA;
+    --gold: #F59E0B;
+    --gold-light: #FCD34D;
+    --cream: #FAFAF7;
+    --white: #FFFFFF;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-400: #94A3B8;
+    --gray-600: #475569;
+    --gray-800: #1E293B;
+    --success: #10B981;
+    --danger: #EF4444;
+    --shadow-sm: 0 2px 8px rgba(13,27,62,0.08);
+    --shadow-md: 0 8px 24px rgba(13,27,62,0.12);
+    --shadow-lg: 0 20px 60px rgba(13,27,62,0.18);
+    --shadow-xl: 0 32px 80px rgba(13,27,62,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0A1628;
+    min-height: 100vh;
+    padding: 60px 40px;
+    overflow-x: hidden;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .brand-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(37,99,235,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    color: var(--sky);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .page-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .page-title span {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+  .page-subtitle {
+    color: var(--gray-400);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+
+  /* SCREENS GRID */
+  .screens-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* SCREEN WRAPPER */
+  .screen-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .screen-wrapper:nth-child(1) { animation-delay: 0.1s; }
+  .screen-wrapper:nth-child(2) { animation-delay: 0.2s; }
+  .screen-wrapper:nth-child(3) { animation-delay: 0.3s; }
+  .screen-wrapper:nth-child(4) { animation-delay: 0.4s; }
+  .screen-wrapper:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .screen-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+
+  /* PHONE FRAME */
+  .phone {
+    width: 340px;
+    height: 720px;
+    background: var(--navy);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: var(--shadow-xl),
+                0 0 0 1px rgba(255,255,255,0.06),
+                inset 0 0 0 1px rgba(255,255,255,0.04);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px 8px;
+    position: relative;
+    z-index: 10;
+  }
+  .status-bar .time {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .status-bar .icons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .status-bar .icons span {
+    color: var(--white);
+    font-size: 11px;
+  }
+
+  /* ============================================
+     SCREEN 1: LOGIN
+  ============================================ */
+  .screen-login {
+    background: var(--navy);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .login-bg {
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 30% 40%, rgba(37,99,235,0.4) 0%, rgba(30,64,175,0.2) 40%, transparent 70%);
+    pointer-events: none;
+  }
+  .login-bg2 {
+    position: absolute;
+    bottom: -50px;
+    right: -80px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .login-top {
+    padding: 50px 32px 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .login-logo {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, var(--royal-light), var(--sky));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.4);
+  }
+  .login-top h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .login-top p {
+    font-size: 13px;
+    color: var(--gray-400);
+    font-weight: 400;
+  }
+  .login-form {
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .field-group label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    display: block;
+    margin-bottom: 7px;
+  }
+  .field-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 12px;
+    padding: 13px 16px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+  .field-input.active {
+    border-color: rgba(96,165,250,0.6);
+    background: rgba(37,99,235,0.08);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  }
+  .field-input .icon { font-size: 15px; opacity: 0.6; }
+  .field-input .placeholder { color: var(--gray-600); font-size: 13px; }
+  .field-input .value { color: var(--white); font-size: 13px; }
+  .role-selector {
+    display: flex;
+    gap: 8px;
+    margin: 4px 0;
+  }
+  .role-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .role-btn.active {
+    background: linear-gradient(135deg, var(--royal), var(--royal-light));
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(37,99,235,0.4);
+  }
+  .role-btn.inactive {
+    background: rgba(255,255,255,0.04);
+    color: var(--gray-400);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .login-btn {
+    background: linear-gradient(135deg, var(--royal), #3B82F6);
+    color: var(--white);
+    padding: 15px;
+    border-radius: 14px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.45);
+    letter-spacing: 0.3px;
+  }
+  .login-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0;
+  }
+  .login-divider hr { flex: 1; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+  .login-divider span { font-size: 11px; color: var(--gray-600); }
+  .login-footer {
+    text-align: center;
+    padding: 20px 32px 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .login-footer p {
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+  .login-footer span { color: var(--sky); font-weight: 600; }
+
+  /* ============================================
+     SCREEN 2: HOME STUDENT
+  ============================================ */
+  .screen-home {
+    background: var(--cream);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .home-header {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 0 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .home-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 0; right: 0;
+    height: 60px;
+    background: var(--cream);
+    border-radius: 30px 30px 0 0;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  .header-top .app-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--white);
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .home-welcome h3 {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .home-welcome h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .stats-row {
+    display: flex;
+    gap: 10px;
+  }
+  .stat-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat-chip .num {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .stat-chip .lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+  }
+  .home-body {
+    flex: 1;
+    padding: 24px 20px 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 10px;
+  }
+  .year-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .year-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+  .year-card.featured {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 100%);
+    border: none;
+    box-shadow: 0 8px 24px rgba(13,27,62,0.25);
+  }
+  .year-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .year-icon.blue { background: rgba(37,99,235,0.1); }
+  .year-icon.gold { background: rgba(245,158,11,0.12); }
+  .year-icon.featured { background: rgba(255,255,255,0.15); }
+  .year-info { flex: 1 }
+  .year-info h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 2px;
+  }
+  .year-info p {
+    font-size: 11px;
+    color: var(--gray-400);
+    font-weight: 400;
+  }
+  .year-card.featured .year-info h4 { color: var(--white); }
+  .year-card.featured .year-info p { color: rgba(255,255,255,0.55); }
+  .year-badge {
+    background: rgba(16,185,129,0.12);
+    color: var(--success);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  .year-badge.gold-badge {
+    background: rgba(245,158,11,0.12);
+    color: var(--gold);
+  }
+  .chevron { color: var(--gray-400); font-size: 14px; }
+  .year-card.featured .chevron { color: rgba(255,255,255,0.5); }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0 16px;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .nav-item .icon { font-size: 20px; }
+  .nav-item .lbl { font-size: 10px; font-weight: 500; color: var(--gray-400); }
+  .nav-item.active .lbl { color: var(--royal); }
+  .nav-dot {
+    width: 4px; height: 4px;
+    background: var(--royal);
+    border-radius: 50%;
+  }
+
+  /* ============================================
+     SCREEN 3: HIERARCHY (Levels)
+  ============================================ */
+  .screen-hierarchy {
+    background: var(--cream);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .hier-header {
+    background: var(--white);
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .top-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 14px;
+  }
+  .back-btn {
+    width: 36px; height: 36px;
+    background: var(--gray-100);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--gray-800);
+    cursor: pointer;
+  }
+  .top-bar h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gray-800);
+    flex: 1;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .crumb {
+    font-size: 11px;
+    color: var(--gray-400);
+    font-weight: 500;
+  }
+  .crumb.active { color: var(--royal); font-weight: 600; }
+  .crumb-sep { color: var(--gray-300); font-size: 10px; }
+  .hier-body {
+    flex: 1;
+    padding: 20px 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hier-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 4px;
+  }
+  .level-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .level-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .level-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    border-radius: 0 0 0 40px;
+    opacity: 0.06;
+  }
+  .level-card.l1 { border-color: rgba(37,99,235,0.25); }
+  .level-card.l1::before { background: var(--royal-light); }
+  .level-card.l2 { border-color: rgba(16,185,129,0.25); }
+  .level-card.l2::before { background: var(--success); }
+  .level-card.l3 { border-color: rgba(245,158,11,0.25); }
+  .level-card.l3::before { background: var(--gold); }
+  .level-card.m1 { border-color: rgba(139,92,246,0.25); }
+  .level-card.m1::before { background: #8B5CF6; }
+  .level-card.m2 { border-color: rgba(239,68,68,0.25); }
+  .level-card.m2::before { background: var(--danger); }
+  .level-badge {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+  }
+  .level-badge.l1 { background: rgba(37,99,235,0.1); color: var(--royal); }
+  .level-badge.l2 { background: rgba(16,185,129,0.1); color: var(--success); }
+  .level-badge.l3 { background: rgba(245,158,11,0.1); color: var(--gold); }
+  .level-badge.m1 { background: rgba(139,92,246,0.1); color: #8B5CF6; }
+  .level-badge.m2 { background: rgba(239,68,68,0.1); color: var(--danger); }
+  .level-card h4 { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+  .level-card p { font-size: 11px; color: var(--gray-400); }
+  .sem-row {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+  .sem-icon {
+    width: 34px; height: 34px;
+    background: rgba(37,99,235,0.08);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .sem-info { flex: 1 }
+  .sem-info h4 { font-size: 13px; font-weight: 600; color: var(--gray-800); }
+  .sem-info p { font-size: 11px; color: var(--gray-400); }
+  .sem-count {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  /* ============================================
+     SCREEN 4: DOCUMENTS LIST
+  ============================================ */
+  .screen-docs {
+    background: var(--cream);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .docs-header {
+    background: linear-gradient(160deg, var(--navy) 0%, #1E3A8A 100%);
+    padding: 0 20px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .docs-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .docs-header::after {
+    content: '';
+    position: absolute;
+    bottom: -32px;
+    left: 0; right: 0;
+    height: 64px;
+    background: var(--cream);
+    border-radius: 28px 28px 0 0;
+  }
+  .docs-top-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 16px; position: relative; z-index: 1;
+  }
+  .docs-top-bar h3 { font-size: 16px; font-weight: 700; color: var(--white); flex: 1; }
+  .filter-btn {
+    width: 34px; height: 34px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .module-info {
+    position: relative; z-index: 1;
+  }
+  .module-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin-bottom: 6px;
+  }
+  .module-tag span { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 500; }
+  .module-info h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .docs-body {
+    flex: 1;
+    padding: 20px 16px 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .search-box {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+  }
+  .search-box span { font-size: 15px; opacity: 0.4; }
+  .search-box p { font-size: 13px; color: var(--gray-400); }
+  .doc-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .doc-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .doc-icon.pdf { background: rgba(239,68,68,0.1); }
+  .doc-icon.pptx { background: rgba(245,158,11,0.1); }
+  .doc-icon.docx { background: rgba(37,99,235,0.1); }
+  .doc-info { flex: 1; min-width: 0; }
+  .doc-info h4 { font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-meta { display: flex; align-items: center; gap: 6px; }
+  .doc-meta span { font-size: 10px; color: var(--gray-400); font-weight: 500; }
+  .doc-meta .dot { width: 3px; height: 3px; background: var(--gray-300); border-radius: 50%; }
+  .dl-btn {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--royal), var(--royal-light));
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(37,99,235,0.35);
+  }
+  .dl-btn.done {
+    background: linear-gradient(135deg, var(--success), #34D399);
+    box-shadow: 0 4px 10px rgba(16,185,129,0.35);
+  }
+  .dl-progress {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 12px 16px;
+    border: 1px solid rgba(37,99,235,0.2);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.07);
+  }
+  .dl-progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .dl-progress-top span { font-size: 12px; font-weight: 600; }
+  .dl-progress-top .pct { color: var(--royal); }
+  .progress-bar-wrap { background: var(--gray-200); border-radius: 4px; height: 4px; }
+  .progress-bar { background: linear-gradient(90deg, var(--royal), var(--sky)); height: 4px; border-radius: 4px; width: 67%; }
+
+  /* ============================================
+     SCREEN 5: ADMIN
+  ============================================ */
+  .screen-admin {
+    background: var(--cream);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .admin-header {
+    background: linear-gradient(160deg, #1A0A2E 0%, #2D1B6B 100%);
+    padding: 0 20px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .admin-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(139,92,246,0.2);
+  }
+  .admin-header::after {
+    content: '';
+    position: absolute;
+    bottom: -32px;
+    left: 0; right: 0;
+    height: 64px;
+    background: var(--cream);
+    border-radius: 28px 28px 0 0;
+  }
+  .admin-top { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; position: relative; z-index: 1; }
+  .admin-top h3 { font-size: 16px; font-weight: 700; color: var(--white); flex: 1; }
+  .admin-badge {
+    background: rgba(139,92,246,0.25);
+    border: 1px solid rgba(167,139,250,0.4);
+    color: #C4B5FD;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .admin-hero {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .admin-icon-big {
+    width: 50px; height: 50px;
+    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 8px 20px rgba(139,92,246,0.4);
+  }
+  .admin-hero-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--white);
+  }
+  .admin-hero-text p { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .admin-body {
+    flex: 1;
+    padding: 20px 16px 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .add-btn {
+    background: linear-gradient(135deg, #7C3AED, #8B5CF6);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(124,58,237,0.35);
+  }
+  .add-btn .icon-wrap {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .add-btn .txt h4 { font-size: 14px; font-weight: 700; color: var(--white); }
+  .add-btn .txt p { font-size: 11px; color: rgba(255,255,255,0.6); }
+  .add-btn .arrow { color: rgba(255,255,255,0.5); margin-left: auto; font-size: 16px; }
+  .admin-doc-row {
+    background: var(--white);
+    border-radius: 13px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+  .admin-doc-icon {
+    width: 40px; height: 40px;
+    background: rgba(239,68,68,0.08);
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .admin-doc-info { flex: 1; min-width: 0; }
+  .admin-doc-info h4 { font-size: 13px; font-weight: 600; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-doc-info p { font-size: 10px; color: var(--gray-400); margin-top: 1px; }
+  .admin-actions { display: flex; gap: 6px; }
+  .action-btn {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .action-btn.edit { background: rgba(37,99,235,0.08); }
+  .action-btn.del { background: rgba(239,68,68,0.08); }
+  .stats-mini {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat-mini-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+  .stat-mini-card .num { font-size: 20px; font-weight: 800; color: var(--gray-800); }
+  .stat-mini-card .lbl { font-size: 10px; color: var(--gray-400); font-weight: 500; margin-top: 2px; }
+  .stat-mini-card .trend { font-size: 10px; color: var(--success); margin-top: 4px; font-weight: 600; }
+
+  /* RESPONSIVE / SCROLLABLE SHOWCASE */
+  .screens-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 60px;
+  }
+
+  /* Color legend */
+  .legend {
+    text-align: center;
+    margin-top: 60px;
+    padding: 30px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .legend h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .palette {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 8px 14px;
+  }
+  .swatch-dot { width: 14px; height: 14px; border-radius: 4px; }
+  .swatch span { font-size: 12px; color: var(--gray-400); }
+  .swatch code { font-size: 10px; color: var(--gray-600); font-family: monospace; }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="brand-label">📐 UI/UX Design System</div>
+  <h1 class="page-title">GestDoc <span>Académique</span></h1>
+  <p class="page-subtitle">React Native · Expo · Firebase — 5 écrans complets</p>
+</div>
+
+<div class="screens-grid">
+
+  <!-- ==================== SCREEN 1: LOGIN ==================== -->
+  <div class="screen-wrapper">
+    <div class="phone">
+      <div class="screen-login">
+        <div class="login-bg"></div>
+        <div class="login-bg2"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <div class="icons">
+            <span>▲▲▲</span>
+            <span>WiFi</span>
+            <span>🔋</span>
+          </div>
+        </div>
+        <div class="login-top">
+          <div class="login-logo">📚</div>
+          <h2>Bon retour,<br>étudiant !</h2>
+          <p>Connectez-vous pour accéder à vos cours</p>
+        </div>
+        <div class="login-form">
+          <div style="margin-bottom: 4px;">
+            <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:7px;">Profil</div>
+            <div class="role-selector">
+              <div class="role-btn active">🎓 Étudiant</div>
+              <div class="role-btn inactive">🔧 Admin</div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Email</label>
+            <div class="field-input active">
+              <span class="icon">✉</span>
+              <span class="value">ahmed@univ.ma</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Mot de passe</label>
+            <div class="field-input">
+              <span class="icon">🔒</span>
+              <span class="placeholder">••••••••</span>
+            </div>
+          </div>
+          <div style="text-align:right; margin-top: -4px;">
+            <span style="font-size:11px;color:var(--sky);font-weight:600;">Mot de passe oublié ?</span>
+          </div>
+          <div class="login-btn">Se connecter →</div>
+          <div class="login-divider">
+            <hr><span>ou continuer avec</span><hr>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:11px 16px;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <span>🏛</span>
+            <span style="font-size:13px;color:rgba(255,255,255,0.6);">SSO Université</span>
+          </div>
+        </div>
+        <div class="login-footer">
+          <p>Pas encore de compte ? <span>Créer un compte</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Connexion</div>
+  </div>
+
+  <!-- ==================== SCREEN 2: HOME ==================== -->
+  <div class="screen-wrapper">
+    <div class="phone">
+      <div class="screen-home">
+        <div class="home-header">
+          <div class="status-bar" style="background:transparent;">
+            <span class="time">9:41</span>
+            <div class="icons"><span style="color:white;">▲▲▲ 🔋</span></div>
+          </div>
+          <div style="padding: 0 24px; position:relative; z-index:1;">
+            <div class="header-top" style="padding-bottom: 18px;">
+              <span class="app-name">GestDoc</span>
+              <div class="avatar">A</div>
+            </div>
+            <div class="home-welcome">
+              <h3>Bonjour, Ahmed 👋</h3>
+              <h2>Mes ressources<br>académiques</h2>
+            </div>
+            <div class="stats-row">
+              <div class="stat-chip">
+                <span class="num">142</span>
+                <span class="lbl">Docs</span>
+              </div>
+              <div class="stat-chip">
+                <span class="num">8</span>
+                <span class="lbl">Modules</span>
+              </div>
+              <div class="stat-chip">
+                <span class="num">23</span>
+                <span class="lbl">Favoris</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-body">
+          <div>
+            <div class="section-title">Années académiques</div>
+            <div class="year-cards">
+              <div class="year-card featured">
+                <div class="year-icon featured">📅</div>
+                <div class="year-info">
+                  <h4>2024 – 2025</h4>
+                  <p>72 documents · Année en cours</p>
+                </div>
+                <span class="year-badge" style="background:rgba(96,165,250,0.2);color:var(--sky);">Actif</span>
+                <span class="chevron">›</span>
+              </div>
+              <div class="year-card">
+                <div class="year-icon blue">📁</div>
+                <div class="year-info">
+                  <h4>2023 – 2024</h4>
+                  <p>58 documents</p>
+                </div>
+                <span class="year-badge gold-badge">Archivé</span>
+                <span class="chevron">›</span>
+              </div>
+              <div class="year-card">
+                <div class="year-icon gold">📂</div>
+                <div class="year-info">
+                  <h4>2022 – 2023</h4>
+                  <p>44 documents</p>
+                </div>
+                <span class="year-badge gold-badge">Archivé</span>
+                <span class="chevron">›</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item active">
+            <span class="icon">🏠</span>
+            <div class="nav-dot"></div>
+            <span class="lbl" style="color:var(--royal);">Accueil</span>
+          </div>
+          <div class="nav-item">
+            <span class="icon">🔍</span>
+            <span class="lbl">Recherche</span>
+          </div>
+          <div class="nav-item">
+            <span class="icon">⭐</span>
+            <span class="lbl">Favoris</span>
+          </div>
+          <div class="nav-item">
+            <span class="icon">👤</span>
+            <span class="lbl">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Accueil Étudiant</div>
+  </div>
+
+  <!-- ==================== SCREEN 3: HIERARCHY ==================== -->
+  <div class="screen-wrapper">
+    <div class="phone">
+      <div class="screen-hierarchy">
+        <div class="hier-header">
+          <div class="status-bar" style="background:transparent;padding-bottom:12px;">
+            <span class="time" style="color:var(--gray-800);">9:41</span>
+            <div class="icons"><span style="color:var(--gray-600);">▲▲▲ 🔋</span></div>
+          </div>
+          <div class="top-bar">
+            <div class="back-btn">←</div>
+            <h3>Choisir le niveau</h3>
+          </div>
+          <div class="breadcrumb">
+            <span class="crumb">2024-25</span>
+            <span class="crumb-sep">›</span>
+            <span class="crumb">Licence</span>
+            <span class="crumb-sep">›</span>
+            <span class="crumb active">Niveau</span>
+          </div>
+        </div>
+        <div class="hier-body">
+          <div class="hier-section-title">Licence</div>
+          <div class="level-grid">
+            <div class="level-card l1">
+              <div class="level-badge l1">L1</div>
+              <h4>Première<br>année</h4>
+              <p>34 docs</p>
+            </div>
+            <div class="level-card l2">
+              <div class="level-badge l2">L2</div>
+              <h4>Deuxième<br>année</h4>
+              <p>28 docs</p>
+            </div>
+            <div class="level-card l3">
+              <div class="level-badge l3">L3</div>
+              <h4>Troisième<br>année</h4>
+              <p>19 docs</p>
+            </div>
+          </div>
+          <div class="hier-section-title" style="margin-top:6px;">Master</div>
+          <div class="level-grid">
+            <div class="level-card m1">
+              <div class="level-badge m1">M1</div>
+              <h4>Master 1</h4>
+              <p>22 docs</p>
+            </div>
+            <div class="level-card m2">
+              <div class="level-badge m2">M2</div>
+              <h4>Master 2</h4>
+              <p>15 docs</p>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item">
+            <span class="icon">🏠</span>
+            <span class="lbl">Accueil</span>
+          </div>
+          <div class="nav-item active">
+            <span class="icon">📚</span>
+            <div class="nav-dot"></div>
+            <span class="lbl" style="color:var(--royal);">Cours</span>
+          </div>
+          <div class="nav-item">
+            <span class="icon">⭐</span>
+            <span class="lbl">Favoris</span>
+          </div>
+          <div class="nav-item">
+            <span class="icon">👤</span>
+            <span class="lbl">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Navigation Hiérarchique</div>
+  </div>
+
+  <!-- ==================== SCREEN 4: DOCUMENTS ==================== -->
+  <div class="screen-wrapper">
+    <div class="phone">
+      <div class="screen-docs">
+        <div class="docs-header">
+          <div class="status-bar" style="background:transparent;position:relative;z-index:2;">
+            <span class="time">9:41</span>
+            <div class="icons"><span style="color:white;">▲▲▲ 🔋</span></div>
+          </div>
+          <div class="docs-top-bar">
+            <div class="back-btn" style="background:rgba(255,255,255,0.1);">
+              <span style="color:white;">←</span>
+            </div>
+            <h3>Documents</h3>
+            <div class="filter-btn">🔍</div>
+          </div>
+          <div class="module-info">
+            <div class="module-tag">
+              <span>📐 L2 · S3 · Mathématiques</span>
+            </div>
+            <h2>Analyse<br>Numérique</h2>
+          </div>
+        </div>
+        <div class="docs-body">
+          <div class="search-box">
+            <span>🔍</span>
+            <p>Rechercher un document...</p>
+          </div>
+
+          <!-- En cours de téléchargement -->
+          <div class="dl-progress">
+            <div class="dl-progress-top">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:16px;">📄</span>
+                <span style="font-size:12px;font-weight:600;color:var(--gray-800);">Cours_Chap3_Integration.pdf</span>
+              </div>
+              <span class="pct">67%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar"></div>
+            </div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon pdf">📕</div>
+            <div class="doc-info">
+              <h4>Cours Chapitre 1 — Suites</h4>
+              <div class="doc-meta">
+                <span>PDF</span><div class="dot"></div>
+                <span>2.4 MB</span><div class="dot"></div>
+                <span>10 jan.</span>
+              </div>
+            </div>
+            <div class="dl-btn done">✓</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon pptx">📊</div>
+            <div class="doc-info">
+              <h4>TD 2 — Dérivées & Limites</h4>
+              <div class="doc-meta">
+                <span>PPTX</span><div class="dot"></div>
+                <span>5.1 MB</span><div class="dot"></div>
+                <span>15 jan.</span>
+              </div>
+            </div>
+            <div class="dl-btn">↓</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon docx">📝</div>
+            <div class="doc-info">
+              <h4>Examen blanc 2024</h4>
+              <div class="doc-meta">
+                <span>DOCX</span><div class="dot"></div>
+                <span>780 KB</span><div class="dot"></div>
+                <span>20 jan.</span>
+              </div>
+            </div>
+            <div class="dl-btn">↓</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icon pdf">📕</div>
+            <div class="doc-info">
+              <h4>TP Méthode de Newton</h4>
+              <div class="doc-meta">
+                <span>PDF</span><div class="dot"></div>
+                <span>1.2 MB</span><div class="dot"></div>
+                <span>25 jan.</span>
+              </div>
+            </div>
+            <div class="dl-btn">↓</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Liste Documents</div>
+  </div>
+
+  <!-- ==================== SCREEN 5: ADMIN ==================== -->
+  <div class="screen-wrapper">
+    <div class="phone">
+      <div class="screen-admin">
+        <div class="admin-header">
+          <div class="status-bar" style="background:transparent;position:relative;z-index:2;">
+            <span class="time">9:41</span>
+            <div class="icons"><span style="color:white;">▲▲▲ 🔋</span></div>
+          </div>
+          <div class="admin-top">
+            <div class="back-btn" style="background:rgba(255,255,255,0.08);">
+              <span style="color:white;">≡</span>
+            </div>
+            <h3>Administration</h3>
+            <div class="admin-badge">ADMIN</div>
+          </div>
+          <div class="admin-hero">
+            <div class="admin-icon-big">⚙️</div>
+            <div class="admin-hero-text">
+              <h2>Tableau de bord</h2>
+              <p>Gestion des ressources académiques</p>
+            </div>
+          </div>
+        </div>
+        <div class="admin-body">
+
+          <div class="stats-mini">
+            <div class="stat-mini-card">
+              <div class="num">142</div>
+              <div class="lbl">Documents</div>
+              <div class="trend">↑ +8 ce mois</div>
+            </div>
+            <div class="stat-mini-card">
+              <div class="num">312</div>
+              <div class="lbl">Étudiants</div>
+              <div class="trend">↑ +24 inscrits</div>
+            </div>
+          </div>
+
+          <div class="add-btn">
+            <div class="icon-wrap">➕</div>
+            <div class="txt">
+              <h4>Ajouter un document</h4>
+              <p>PDF, DOCX, PPTX, XLSX...</p>
+            </div>
+            <span class="arrow">›</span>
+          </div>
+
+          <div class="hier-section-title">Récemment ajoutés</div>
+
+          <div class="admin-doc-row">
+            <div class="admin-doc-icon">📕</div>
+            <div class="admin-doc-info">
+              <h4>Cours_Algo_L2_S3.pdf</h4>
+              <p>L2 · Algorithmique · S3 · il y a 2h</p>
+            </div>
+            <div class="admin-actions">
+              <div class="action-btn edit">✏️</div>
+              <div class="action-btn del">🗑</div>
+            </div>
+          </div>
+
+          <div class="admin-doc-row">
+            <div class="admin-doc-icon" style="background:rgba(245,158,11,0.08);">📊</div>
+            <div class="admin-doc-info">
+              <h4>TD_Maths_Chap4.pptx</h4>
+              <p>L1 · Mathématiques · S2 · hier</p>
+            </div>
+            <div class="admin-actions">
+              <div class="action-btn edit">✏️</div>
+              <div class="action-btn del">🗑</div>
+            </div>
+          </div>
+
+          <div class="admin-doc-row">
+            <div class="admin-doc-icon" style="background:rgba(37,99,235,0.08);">📝</div>
+            <div class="admin-doc-info">
+              <h4>Examen_Blanc_M1.docx</h4>
+              <p>M1 · Réseaux · S1 · il y a 3j</p>
+            </div>
+            <div class="admin-actions">
+              <div class="action-btn edit">✏️</div>
+              <div class="action-btn del">🗑</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Interface Admin</div>
+  </div>
+
+</div><!-- end screens-grid -->
+
+<!-- COLOR PALETTE -->
+<div class="legend">
+  <h3>Palette de couleurs</h3>
+  <div class="palette">
+    <div class="swatch">
+      <div class="swatch-dot" style="background:#0D1B3E;"></div>
+      <span>Navy</span>
+      <code>#0D1B3E</code>
+    </div>
+    <div class="swatch">
+      <div class="swatch-dot" style="background:#2563EB;"></div>
+      <span>Royal Blue</span>
+      <code>#2563EB</code>
+    </div>
+    <div class="swatch">
+      <div class="swatch-dot" style="background:#60A5FA;"></div>
+      <span>Sky Blue</span>
+      <code>#60A5FA</code>
+    </div>
+    <div class="swatch">
+      <div class="swatch-dot" style="background:#F59E0B;"></div>
+      <span>Gold</span>
+      <code>#F59E0B</code>
+    </div>
+    <div class="swatch">
+      <div class="swatch-dot" style="background:#10B981;"></div>
+      <span>Success</span>
+      <code>#10B981</code>
+    </div>
+    <div class="swatch">
+      <div class="swatch-dot" style="background:#8B5CF6;"></div>
+      <span>Admin Purple</span>
+      <code>#8B5CF6</code>
+    </div>
+    <div class="swatch">
+      <div class="swatch-dot" style="background:#FAFAF7;border:1px solid #eee;"></div>
+      <span>Background</span>
+      <code>#FAFAF7</code>
+    </div>
+  </div>
+  <p style="color:var(--gray-600);font-size:12px;margin-top:20px;">Typography: DM Serif Display (titres) · DM Sans (corps)</p>
+</div>
+
+</body>
+</html>

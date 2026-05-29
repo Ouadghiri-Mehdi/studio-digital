@@ -192,38 +192,54 @@ function BgCanvas() {
 
     const init = () => {
       resize();
-      pts = Array.from({ length: 72 }, () => ({
-        x:  Math.random() * W,
-        y:  Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.45,
-        vy: (Math.random() - 0.5) * 0.45,
-      }));
+      pts = Array.from({ length: 95 }, (_, i) => {
+        const core = i < 24;
+        return {
+          x:  core ? W * 0.5 + (Math.random() - 0.5) * W * 0.40 : Math.random() * W,
+          y:  core ? H * 0.44 + (Math.random() - 0.5) * H * 0.38 : Math.random() * H,
+          vx: (Math.random() - 0.5) * (core ? 0.26 : 0.42),
+          vy: (Math.random() - 0.5) * (core ? 0.26 : 0.42),
+          r:  core ? Math.random() * 1.1 + 0.8 : Math.random() * 0.7 + 0.4,
+        };
+      });
     };
 
     const tick = () => {
       ctx.clearRect(0, 0, W, H);
+
+      // Soft radial glow behind hero center
+      const g = ctx.createRadialGradient(W * 0.5, H * 0.44, 0, W * 0.5, H * 0.44, W * 0.32);
+      g.addColorStop(0,   "rgba(74,222,128,0.048)");
+      g.addColorStop(0.5, "rgba(74,222,128,0.016)");
+      g.addColorStop(1,   "rgba(74,222,128,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
       for (let i = 0; i < pts.length; i++) {
         const a = pts[i];
-        a.x += a.vx;  a.y += a.vy;
+        a.x += a.vx; a.y += a.vy;
         if (a.x < 0 || a.x > W) a.vx *= -1;
         if (a.y < 0 || a.y > H) a.vy *= -1;
+
         for (let j = i + 1; j < pts.length; j++) {
           const b = pts[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < 170) {
-            ctx.strokeStyle = `rgba(74,222,128,${(1 - d / 170) * 0.2})`;
-            ctx.lineWidth = 0.7;
+          if (d < 178) {
+            ctx.strokeStyle = `rgba(74,222,128,${(1 - d / 178) * 0.16})`;
+            ctx.lineWidth   = 0.65;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
           }
         }
-        ctx.fillStyle = "rgba(74,222,128,0.45)";
+
+        ctx.fillStyle = `rgba(74,222,128,${0.25 + a.r * 0.12})`;
         ctx.beginPath();
-        ctx.arc(a.x, a.y, 1.3, 0, Math.PI * 2);
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
         ctx.fill();
       }
+
       raf = requestAnimationFrame(tick);
     };
 
