@@ -1,17 +1,26 @@
 /* eslint-disable */
 // Who We Are + founders
 
-function FounderCard({ idx, initials, name, role, bio, focus }) {
+function FounderCard({ idx, photo, initials, name, role, bio, focus }) {
   return (
     <div className="founder-card reveal" data-cursor="hover">
-      <div className="founder-mug" aria-hidden="true">
-        <div className="founder-mug-grid" />
-        <span className="founder-initials">{initials}</span>
+      <div className="founder-mug">
+        {photo ? (
+          <>
+            <img src={photo} alt={name} className="founder-photo" />
+            <div className="founder-photo-overlay" />
+          </>
+        ) : (
+          <>
+            <div className="founder-mug-grid" />
+            <span className="founder-initials">{initials}</span>
+          </>
+        )}
         <span className="founder-tag chip">founder · 0{idx}</span>
       </div>
       <div className="founder-body">
         <div className="founder-meta">
-          <span className="eyebrow" style={{ "--no-dot": 1 }}>{role}</span>
+          <span className="eyebrow">{role}</span>
         </div>
         <h3 className="founder-name h-3">{name}</h3>
         <p className="founder-bio">{bio}</p>
@@ -34,14 +43,13 @@ function WhoWeAre() {
           </div>
           <div>
             <h2 className="h-section">
-              Two builders, <em className="serif">one</em> studio,
+              Two engineers, <em className="serif">one</em> studio,
               <br />any idea you can describe.
             </h2>
             <p className="lede">
-              We are creative developers and designers obsessed with the moment
-              an idea becomes real. At Nexora Studio, we help individuals,
-              startups and teams turn rough concepts into shipped digital products —
-              web, mobile and beyond.
+              We are full-stack engineers obsessed with the moment an idea becomes real.
+              At Nexora Studio, we help founders and teams turn rough concepts into
+              shipped digital products — powered by AI, built with precision.
             </p>
           </div>
         </div>
@@ -49,27 +57,29 @@ function WhoWeAre() {
         <div className="founders">
           <FounderCard
             idx={1}
+            photo="assets/mehdi.jpg"
             initials="M.O"
             name="Mehdi Ouadghiri"
-            role="engineering + product"
-            bio="Full-stack developer with a passion for building digital products that solve real problems. Leads engineering, product architecture and the technical direction of the studio."
-            focus={["full-stack development", "mobile applications", "platform architecture", "startup building"]}
+            role="full-stack · AI & automation"
+            bio="Full-stack engineer with a strong focus on AI-powered systems and automation. Leads product architecture, backend and frontend development — and brings innovation and creativity to every solution built."
+            focus={["Full-Stack Development", "AI & Automation", "Innovation", "Creativity"]}
           />
           <FounderCard
             idx={2}
+            photo="assets/fall.jpg"
             initials="A.F"
             name="Ahmed Fall"
-            role="design + brand"
-            bio="Digital designer focused on crafting interfaces that are both beautiful and functional. Leads UI/UX, brand systems and the visual identity of every project we ship."
-            focus={["UI/UX design", "brand identity", "design systems", "creative direction"]}
+            role="full-stack · AI development"
+            bio="Full-stack engineer specialized in AI development and innovative digital creation. Builds scalable systems and crafts the experiences that turn ambitious ideas into live, working products."
+            focus={["Full-Stack Development", "AI Development", "Innovation", "Creation"]}
           />
         </div>
 
         <div className="who-pillars">
           {[
-            { k: "approach", v: "Small team, full ownership. We are the people who pitch, design, build and ship — no handoffs, no agency middle layer." },
-            { k: "method", v: "From idea to interface to working software. We move fast without cutting corners, in weeks not quarters." },
-            { k: "promise", v: "If you can describe it, we can build it. Web, mobile, platform or brand — we make ideas real." },
+            { k: "approach", v: "Two full-stack engineers with full ownership. We pitch, architect, build and ship — no handoffs, no agency layer, just us and the product." },
+            { k: "method", v: "From idea to AI-powered system to live product. We move fast without cutting corners, in weeks not quarters." },
+            { k: "promise", v: "If you can describe it, we can build it. Web, mobile, platform or AI integration — we make ideas real." },
           ].map((p, i) => (
             <div key={p.k} className={`who-pillar reveal delay-${i + 1}`}>
               <span className="chip">{p.k}</span>
