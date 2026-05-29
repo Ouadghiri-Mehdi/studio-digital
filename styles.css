@@ -466,9 +466,13 @@ body.no-grain .bg-noise { display: none; }
   color: var(--fg-dim);
   transition: color 0.25s, background 0.25s;
 }
-.nav a.nav-link:hover {
+.nav a.nav-link:hover,
+.nav a.nav-link.is-active {
   color: var(--fg);
   background: var(--glass);
+}
+.nav a.nav-link.is-active {
+  color: var(--accent);
 }
 .nav-cta {
   margin-left: 6px;

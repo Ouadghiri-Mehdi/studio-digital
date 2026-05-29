@@ -1,7 +1,18 @@
 /* eslint-disable */
+// Shared components — loaded on every page
 const { useEffect: useEffectApp, useState: useStateApp, useRef: useRefApp } = React;
 
-// ---- Custom cursor
+// ---- Arrow icon (shared across all sections) ----
+function Arrow() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M3 11L11 3M11 3H4M11 3V10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+window.Arrow = Arrow;
+
+// ---- Custom cursor ----
 function Cursor() {
   const dot = useRefApp(null);
   const ring = useRefApp(null);
@@ -10,7 +21,7 @@ function Cursor() {
     let rx = x, ry = y;
     const onMove = (e) => { x = e.clientX; y = e.clientY; };
     const onDown = () => ring.current && ring.current.classList.add("click");
-    const onUp = () => ring.current && ring.current.classList.remove("click");
+    const onUp   = () => ring.current && ring.current.classList.remove("click");
     const onOver = (e) => {
       const t = e.target.closest("[data-cursor], a, button");
       if (!t) { ring.current && ring.current.classList.remove("hover"); return; }
@@ -22,9 +33,8 @@ function Cursor() {
     window.addEventListener("pointerup", onUp);
     let raf;
     const tick = () => {
-      rx += (x - rx) * 0.18;
-      ry += (y - ry) * 0.18;
-      if (dot.current) dot.current.style.transform = `translate(${x}px, ${y}px)`;
+      rx += (x - rx) * 0.18; ry += (y - ry) * 0.18;
+      if (dot.current)  dot.current.style.transform  = `translate(${x}px, ${y}px)`;
       if (ring.current) ring.current.style.transform = `translate(${rx}px, ${ry}px)`;
       raf = requestAnimationFrame(tick);
     };
@@ -40,12 +50,12 @@ function Cursor() {
   return (
     <>
       <div ref={ring} className="cursor-ring" />
-      <div ref={dot} className="cursor-dot" />
+      <div ref={dot}  className="cursor-dot"  />
     </>
   );
 }
 
-// ---- Loading screen
+// ---- Loader ----
 function Loader({ onDone }) {
   const [p, setP] = useStateApp(0);
   const [stage, setStage] = useStateApp("loading");
@@ -54,9 +64,7 @@ function Loader({ onDone }) {
     const id = setInterval(() => {
       v += Math.random() * 11 + 5;
       if (v >= 100) {
-        v = 100;
-        clearInterval(id);
-        setP(100);
+        v = 100; clearInterval(id); setP(100);
         setTimeout(() => { setStage("fading"); onDone && onDone(); }, 300);
         setTimeout(() => setStage("gone"), 1000);
         return;
@@ -70,32 +78,25 @@ function Loader({ onDone }) {
     <div className={`loader ${stage === "fading" ? "done" : ""}`} style={{ "--p": p / 100 }}>
       <div className="loader-num">{String(Math.floor(p)).padStart(3, "0")}</div>
       <div className="loader-bar" />
-      <div className="loader-tag">loading studio · {p < 30 ? "warming up" : p < 70 ? "compositing" : "ready"}</div>
+      <div className="loader-tag">
+        nexora studio · {p < 30 ? "warming up" : p < 70 ? "compositing" : "ready"}
+      </div>
     </div>
   );
 }
 
-// ---- Theme toggle icon
+// ---- Theme toggle ----
 function ThemeToggle({ theme, onToggle }) {
   return (
-    <button
-      className="theme-toggle"
-      onClick={onToggle}
-      data-cursor="hover"
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      title={theme === "dark" ? "Light mode" : "Dark mode"}
-    >
+    <button className="theme-toggle" onClick={onToggle} data-cursor="hover"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>
       {theme === "dark" ? (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
         </svg>
       ) : (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -106,37 +107,49 @@ function ThemeToggle({ theme, onToggle }) {
   );
 }
 
-// ---- Nav
+// ---- Nav — page links ----
 function Nav({ theme, onToggleTheme }) {
   const [shrunk, setShrunk] = useStateApp(false);
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+
+  const links = [
+    { label: "Studio",   href: "studio.html"   },
+    { label: "Services", href: "services.html" },
+    { label: "Work",     href: "work.html"     },
+    { label: "Process",  href: "process.html"  },
+  ];
+
   useEffectApp(() => {
     const on = () => setShrunk(window.scrollY > 80);
     on();
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
+
   return (
     <div className="nav" data-shrunk={shrunk}>
       <div className="nav-inner">
-        <a href="#hero" className="nav-brand" data-cursor="hover">
+        <a href="index.html" className="nav-brand" data-cursor="hover">
           <span className="nav-brand-dot" />
           nexora studio
         </a>
         <div className="nav-links">
-          <a className="nav-link" href="#studio">Studio</a>
-          <a className="nav-link" href="#services">Services</a>
-          <a className="nav-link" href="#projects">Work</a>
-          <a className="nav-link" href="#process">Process</a>
-          <a className="nav-link" href="#vision">Vision</a>
+          {links.map(l => (
+            <a key={l.href}
+               className={`nav-link ${path === l.href ? "is-active" : ""}`}
+               href={l.href}>
+              {l.label}
+            </a>
+          ))}
         </div>
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-        <a href="#contact" className="nav-cta" data-cursor="hover">Start a project</a>
+        <a href="contact.html" className="nav-cta" data-cursor="hover">Start a project</a>
       </div>
     </div>
   );
 }
 
-// ---- Reveal on scroll
+// ---- Reveal on scroll ----
 function useReveal() {
   useEffectApp(() => {
     const vh = window.innerHeight;
@@ -146,9 +159,7 @@ function useReveal() {
       if (r.top > vh * 0.9) el.classList.add("armed");
     });
     const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("in"); });
-      },
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("in"); }),
       { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
     );
     document.querySelectorAll(".reveal.armed").forEach((el) => io.observe(el));
@@ -159,7 +170,7 @@ function useReveal() {
   }, []);
 }
 
-// ---- Marquee divider
+// ---- Marquee ----
 function Marquee() {
   const items = ["websites", "mobile apps", "branding", "ui · ux", "ai integration", "automation", "startup building", "digital platforms", "e-commerce"];
   const row = (key) => (
@@ -169,27 +180,20 @@ function Marquee() {
   );
   return (
     <div className="marquee" aria-hidden="true">
-      {row("a")}
-      {row("b")}
+      {row("a")}{row("b")}
     </div>
   );
 }
 
-// ---- Animated particle network background
+// ---- Background particle network ----
 function BgCanvas() {
   const canvasRef = useRefApp(null);
-
   useEffectApp(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let raf, W, H, pts;
-
-    const resize = () => {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    };
-
+    const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
     const init = () => {
       resize();
       pts = Array.from({ length: 95 }, (_, i) => {
@@ -203,52 +207,36 @@ function BgCanvas() {
         };
       });
     };
-
     const tick = () => {
       ctx.clearRect(0, 0, W, H);
-
-      // Soft radial glow behind hero center
       const g = ctx.createRadialGradient(W * 0.5, H * 0.44, 0, W * 0.5, H * 0.44, W * 0.32);
-      g.addColorStop(0,   "rgba(74,222,128,0.048)");
+      g.addColorStop(0, "rgba(74,222,128,0.048)");
       g.addColorStop(0.5, "rgba(74,222,128,0.016)");
-      g.addColorStop(1,   "rgba(74,222,128,0)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-
+      g.addColorStop(1, "rgba(74,222,128,0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
       for (let i = 0; i < pts.length; i++) {
         const a = pts[i];
         a.x += a.vx; a.y += a.vy;
         if (a.x < 0 || a.x > W) a.vx *= -1;
         if (a.y < 0 || a.y > H) a.vy *= -1;
-
         for (let j = i + 1; j < pts.length; j++) {
           const b = pts[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < 178) {
             ctx.strokeStyle = `rgba(74,222,128,${(1 - d / 178) * 0.16})`;
-            ctx.lineWidth   = 0.65;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
+            ctx.lineWidth = 0.65;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }
         }
-
         ctx.fillStyle = `rgba(74,222,128,${0.25 + a.r * 0.12})`;
-        ctx.beginPath();
-        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
       }
-
       raf = requestAnimationFrame(tick);
     };
-
-    init();
-    tick();
+    init(); tick();
     window.addEventListener("resize", init);
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", init); };
   }, []);
-
   return (
     <div className="bg-canvas">
       <canvas ref={canvasRef} className="bg-particles" />
@@ -257,13 +245,12 @@ function BgCanvas() {
   );
 }
 
-// ---- App root
-function App() {
+// ---- Page Shell — wraps every page ----
+function PageShell({ children, marquee }) {
   const [loaded, setLoaded] = useStateApp(false);
   const [theme, setTheme] = useStateApp(() =>
     document.documentElement.getAttribute("data-theme") || "dark"
   );
-
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
     document.documentElement.classList.add("theme-switching");
@@ -272,24 +259,7 @@ function App() {
     setTheme(next);
     setTimeout(() => document.documentElement.classList.remove("theme-switching"), 600);
   };
-
   useReveal();
-
-  useEffectApp(() => {
-    const onClick = (e) => {
-      const a = e.target.closest("a[href^='#']");
-      if (!a) return;
-      const id = a.getAttribute("href").slice(1);
-      if (!id) return;
-      const el = document.getElementById(id);
-      if (!el) return;
-      e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
-  }, []);
-
   return (
     <>
       <BgCanvas />
@@ -297,14 +267,8 @@ function App() {
       <Loader onDone={() => setLoaded(true)} />
       <Nav theme={theme} onToggleTheme={toggleTheme} />
       <main>
-        <Hero />
-        <Marquee />
-        <WhoWeAre />
-        <Services />
-        <Projects />
-        <Process />
-        <Vision />
-        <Contact />
+        {children}
+        {marquee && <Marquee />}
       </main>
       <Footer />
       {window.StudioTweaks ? <window.StudioTweaks /> : null}
@@ -312,5 +276,4 @@ function App() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+window.PageShell = PageShell;
