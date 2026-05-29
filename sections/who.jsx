@@ -57,7 +57,7 @@ function WhoWeAre() {
         <div className="founders">
           <FounderCard
             idx={1}
-            photo="assets/mehdi.jpg"
+            photo="assets/mehdi.png"
             initials="M.O"
             name="Mehdi Ouadghiri"
             role="full-stack · AI & automation"
@@ -66,7 +66,7 @@ function WhoWeAre() {
           />
           <FounderCard
             idx={2}
-            photo="assets/fall.jpg"
+            photo="assets/fall.jfif"
             initials="A.F"
             name="Ahmed Fall"
             role="full-stack · AI development"
