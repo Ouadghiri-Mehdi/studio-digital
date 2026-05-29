@@ -48,7 +48,7 @@ function Cursor() {
 // ---- Loading screen
 function Loader({ onDone }) {
   const [p, setP] = useStateApp(0);
-  const [stage, setStage] = useStateApp("loading"); // loading -> fading -> gone
+  const [stage, setStage] = useStateApp("loading");
   useEffectApp(() => {
     let v = 0;
     const id = setInterval(() => {
@@ -75,8 +75,39 @@ function Loader({ onDone }) {
   );
 }
 
+// ---- Theme toggle icon
+function ThemeToggle({ theme, onToggle }) {
+  return (
+    <button
+      className="theme-toggle"
+      onClick={onToggle}
+      data-cursor="hover"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={theme === "dark" ? "Light mode" : "Dark mode"}
+    >
+      {theme === "dark" ? (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      ) : (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      )}
+    </button>
+  );
+}
+
 // ---- Nav
-function Nav() {
+function Nav({ theme, onToggleTheme }) {
   const [shrunk, setShrunk] = useStateApp(false);
   useEffectApp(() => {
     const on = () => setShrunk(window.scrollY > 80);
@@ -98,13 +129,14 @@ function Nav() {
           <a className="nav-link" href="#process">Process</a>
           <a className="nav-link" href="#vision">Vision</a>
         </div>
+        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         <a href="#contact" className="nav-cta" data-cursor="hover">Start a project</a>
       </div>
     </div>
   );
 }
 
-// ---- Reveal on scroll: arm elements below initial viewport, release on intersect
+// ---- Reveal on scroll
 function useReveal() {
   useEffectApp(() => {
     const vh = window.innerHeight;
@@ -120,7 +152,6 @@ function useReveal() {
       { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
     );
     document.querySelectorAll(".reveal.armed").forEach((el) => io.observe(el));
-    // Safety net — release everything after 4s no matter what
     const t = setTimeout(() => {
       document.querySelectorAll(".reveal.armed").forEach((el) => el.classList.add("in"));
     }, 4000);
@@ -157,9 +188,21 @@ function BgCanvas() {
 // ---- App root
 function App() {
   const [loaded, setLoaded] = useStateApp(false);
+  const [theme, setTheme] = useStateApp(() =>
+    document.documentElement.getAttribute("data-theme") || "dark"
+  );
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    document.documentElement.classList.add("theme-switching");
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("nexora-theme", next);
+    setTheme(next);
+    setTimeout(() => document.documentElement.classList.remove("theme-switching"), 600);
+  };
+
   useReveal();
 
-  // Smooth scroll
   useEffectApp(() => {
     const onClick = (e) => {
       const a = e.target.closest("a[href^='#']");
@@ -180,7 +223,7 @@ function App() {
       <BgCanvas />
       <Cursor />
       <Loader onDone={() => setLoaded(true)} />
-      <Nav />
+      <Nav theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Hero />
         <Marquee />
