@@ -11,11 +11,11 @@
   --fg-mute:     oklch(0.50 0.010 255);
   --line:        oklch(0.30 0.010 255 / 0.50);
   --line-soft:   oklch(0.30 0.010 255 / 0.18);
-  --accent:      oklch(0.62 0.26 258);
-  --accent-b:    oklch(0.68 0.22 290);
+  --accent:      oklch(0.80 0.27 140);
+  --accent-b:    oklch(0.65 0.18 185);
   --accent-warm: oklch(0.80 0.17  72);
-  --accent-glow: oklch(0.62 0.26 258 / 0.45);
-  --accent-glow-sm: oklch(0.62 0.26 258 / 0.20);
+  --accent-glow: oklch(0.80 0.27 140 / 0.40);
+  --accent-glow-sm: oklch(0.80 0.27 140 / 0.18);
   --glass:       oklch(0.97 0.005 255 / 0.035);
   --glass-mid:   oklch(0.97 0.005 255 / 0.055);
   --glass-strong:oklch(0.97 0.005 255 / 0.08);
@@ -41,13 +41,17 @@
   --fg-mute:        oklch(0.60 0.010 255);
   --line:           oklch(0.68 0.010 255 / 0.40);
   --line-soft:      oklch(0.76 0.007 255 / 0.55);
-  --accent-glow:    oklch(0.62 0.26 258 / 0.22);
-  --accent-glow-sm: oklch(0.62 0.26 258 / 0.14);
+  --accent-glow:    oklch(0.80 0.27 140 /0.22);
+  --accent-glow-sm: oklch(0.80 0.27 140 /0.14);
   --glass:          oklch(1 0 0 / 0.70);
   --glass-mid:      oklch(1 0 0 / 0.85);
   --glass-strong:   oklch(1 0 0 / 0.95);
   --nav-bg:         oklch(1 0 0 / 0.86);
   --shadow-card:    0 12px 40px -12px oklch(0 0 0 / 0.16);
+  --accent:         oklch(0.48 0.22 140);
+  --accent-b:       oklch(0.38 0.16 185);
+  --accent-glow:    oklch(0.48 0.22 140 / 0.28);
+  --accent-glow-sm: oklch(0.48 0.22 140 / 0.14);
 }
 
 /* Smooth theme switching */
@@ -585,7 +589,7 @@ body.no-grain .bg-noise { display: none; }
 .chip.accent {
   border-color: var(--accent-glow-sm);
   color: var(--accent);
-  background: oklch(0.62 0.26 258 / 0.08);
+  background: oklch(0.80 0.27 140 /0.08);
 }
 
 /* ---- Footer ---- */

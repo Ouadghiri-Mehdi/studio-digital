@@ -1,49 +1,14 @@
 /* eslint-disable */
-// Hero section with animated orb + grid bg
+// Hero — editorial layout
 
 const { useEffect, useRef, useState } = React;
-
-function HeroOrb() {
-  const ref = useRef(null);
-  useEffect(() => {
-    let raf;
-    const start = performance.now();
-    const tick = (t) => {
-      const el = ref.current;
-      if (!el) return;
-      const dt = (t - start) / 1000;
-      const x = Math.sin(dt * 0.3) * 40;
-      const y = Math.cos(dt * 0.22) * 30;
-      el.style.transform = `translate(${x}px, ${y}px)`;
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-  return (
-    <div className="hero-orb-wrap" aria-hidden="true">
-      <div ref={ref} className="hero-orb" />
-      <div className="hero-orb hero-orb-2" />
-    </div>
-  );
-}
-
-function HeroMetric({ label, value }) {
-  return (
-    <div className="hero-metric">
-      <div className="hero-metric-v">{value}</div>
-      <div className="hero-metric-l">{label}</div>
-    </div>
-  );
-}
 
 function Hero() {
   const [time, setTime] = useState("");
   useEffect(() => {
     const upd = () => {
       const d = new Date();
-      const opts = { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
-      setTime(d.toLocaleTimeString("en-GB", opts));
+      setTime(d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }));
     };
     upd();
     const id = setInterval(upd, 1000);
@@ -52,49 +17,65 @@ function Hero() {
 
   return (
     <section id="hero" data-screen-label="01 Hero" className="hero">
-      <HeroOrb />
-      <div className="container hero-grid">
-        <div className="hero-corner hero-corner-tl">
-          <span className="eyebrow">nexora studio — digital innovation</span>
-        </div>
-        <div className="hero-corner hero-corner-tr">
-          <span className="hero-time"><span className="hero-time-dot" /> available worldwide / {time}</span>
+
+      {/* Giant background number */}
+      <div className="hero-bg-num" aria-hidden="true">01</div>
+
+      <div className="container hero-wrap">
+
+        {/* ── Top meta bar ── */}
+        <div className="hero-head">
+          <span className="hero-label">01 — Digital Innovation Studio</span>
+          <span className="hero-label">
+            <span className="hero-time-dot" />
+            {time} · Available worldwide
+          </span>
         </div>
 
-        <h1 className="h-display hero-title">
-          <span className="reveal in">Transforming</span>
-          <span className="reveal in delay-1"><em className="serif">ideas</em> into</span>
-          <span className="reveal in delay-2">digital experiences<span className="hero-period">.</span></span>
+        {/* ── Main title ── */}
+        <h1 className="hero-title">
+          <span className="hero-line reveal in">We turn</span>
+          <span className="hero-line reveal in delay-1">
+            ideas into{" "}
+            <em className="hero-em">digital</em>
+          </span>
+          <span className="hero-line hero-line-dim reveal in delay-2">
+            products<span className="hero-dot">.</span>
+          </span>
         </h1>
 
-        <p className="hero-sub reveal in delay-3">
-          Nexora Studio — a two-person digital innovation studio building websites,
-          mobile apps, platforms and smart digital solutions for founders,
-          startups and ambitious teams.
-        </p>
-
-        <div className="hero-cta reveal in delay-4">
-          <a href="#projects" className="btn btn-primary" data-cursor="hover">
-            Explore our work
-            <span className="arrow"><Arrow /></span>
-          </a>
-          <a href="#contact" className="btn btn-ghost" data-cursor="hover">
-            Start a project
-            <span className="arrow"><Arrow /></span>
-          </a>
+        {/* ── Chips + CTA ── */}
+        <div className="hero-divide reveal in delay-3">
+          <div className="hero-tags">
+            {["Web", "Mobile", "Platforms", "AI", "Branding"].map((t) => (
+              <span key={t} className="chip">{t}</span>
+            ))}
+          </div>
+          <div className="hero-cta-pair">
+            <a href="#projects" className="btn btn-ghost" data-cursor="hover">
+              See our work <span className="arrow"><Arrow /></span>
+            </a>
+            <a href="#contact" className="btn btn-primary" data-cursor="hover">
+              Start a project <span className="arrow"><Arrow /></span>
+            </a>
+          </div>
         </div>
 
-        <div className="hero-foot">
-          <HeroMetric value="4+" label="projects shipped" />
-          <HeroMetric value="2" label="founders. one studio." />
-          <HeroMetric value="3" label="industries served" />
-          <HeroMetric value="∞" label="ideas in motion" />
+        {/* ── Stats ── */}
+        <div className="hero-foot reveal in delay-4">
+          {[
+            { v: "4+", l: "projects shipped" },
+            { v: "2", l: "founders" },
+            { v: "3", l: "industries" },
+            { v: "∞", l: "ideas" },
+          ].map((m) => (
+            <div key={m.l} className="hero-metric">
+              <div className="hero-metric-v">{m.v}</div>
+              <div className="hero-metric-l">{m.l}</div>
+            </div>
+          ))}
         </div>
 
-        <div className="hero-scroll" aria-hidden="true">
-          <span>scroll</span>
-          <span className="hero-scroll-line" />
-        </div>
       </div>
     </section>
   );
