@@ -63,7 +63,7 @@ function WhoWeAre() {
             role="full-stack · AI & automation"
             bio="Full-stack engineer with a strong focus on AI-powered systems and automation. Leads product architecture, backend and frontend development — and brings innovation and creativity to every solution built."
             focus={["Full-Stack Development", "AI & Automation", "Innovation", "Creativity"]}
-            photoStyle={{ transform: "scale(1.25)", transformOrigin: "center 8%" }}
+            photoStyle={{ objectPosition: "center 70%", transform: "scale(2.2)", transformOrigin: "center 50%" }}
           />
           <FounderCard
             idx={2}
