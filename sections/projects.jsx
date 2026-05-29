@@ -7,12 +7,15 @@ const PROJECTS = [
   {
     id: "ecommerce",
     client: "E-Commerce App",
-    title: "A full e-commerce experience, web and mobile.",
+    title: "A full e-commerce platform — web and mobile, end to end.",
     year: "2025",
     tags: ["Web", "Mobile", "E-Commerce"],
     liveUrl: "#",
+    live: false,
     screenshot: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
-    summary: "A complete e-commerce platform built for a seamless shopping experience — product catalog, cart, payments and order management, all in one.",
+    summary: "A complete online store built for scale — product catalog, cart, payments, and order management designed as a single cohesive experience across web and mobile.",
+    before: "Products listed on WhatsApp, payments via wire transfer, orders tracked in a notebook. Scaling was impossible.",
+    after: "A full storefront: catalog, cart, checkout, and order history — live on web and mobile, with no manual steps.",
     metrics: [
       { v: "Web", l: "& mobile" },
       { v: "Full", l: "stack build" },
@@ -21,32 +24,38 @@ const PROJECTS = [
     palette: ["oklch(0.78 0.18 50)", "oklch(0.58 0.16 50)", "oklch(0.18 0.01 55)"],
   },
   {
-    id: "madrassti",
-    client: "Madrassti",
-    title: "A digital platform reimagining how students learn.",
+    id: "madrastak",
+    client: "Madrastak",
+    title: "School management SaaS for Mauritanian private schools.",
     year: "2025",
-    tags: ["EdTech", "Platform", "Web"],
-    liveUrl: "#",
-    screenshot: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
-    summary: "Madrassti is an educational digital platform connecting students and instructors. Built for accessibility, engagement and real learning outcomes.",
+    tags: ["SaaS", "EdTech", "Bilingual"],
+    liveUrl: "https://madrastak.net",
+    live: true,
+    screenshot: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+    summary: "Madrastak centralizes everything a private school needs — grades, report cards, attendance, billing, and parent communication — in a bilingual platform purpose-built for Mauritania.",
+    before: "Paper registers, scattered spreadsheets, WhatsApp calls for every parent update. Each report card season was a three-day manual ordeal.",
+    after: "Automated report cards, real-time attendance, integrated billing, and a parent portal. Over 3,000 bulletins generated in the first year.",
     metrics: [
-      { v: "EdTech", l: "platform" },
-      { v: "Web", l: "app" },
-      { v: "Live", l: "product" },
+      { v: "3,000+", l: "bulletins generated" },
+      { v: "1,000+", l: "students managed" },
+      { v: "94%", l: "attendance tracked" },
     ],
     palette: ["oklch(0.72 0.18 245)", "oklch(0.52 0.16 245)", "oklch(0.18 0.01 250)"],
   },
   {
     id: "profnum",
     client: "Prof Num",
-    title: "A professional digital mobile application.",
+    title: "A mobile tool built for professionals in the field.",
     year: "2024",
-    tags: ["Mobile", "App", "Professional"],
+    tags: ["Mobile", "iOS", "Android"],
     liveUrl: "#",
+    live: false,
     screenshot: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80",
-    summary: "A professional digital tool delivered as a mobile application — built to solve a real workflow problem and designed for daily use.",
+    summary: "Prof Num puts professional-grade workflow tools in a mobile app — built for people who work outside the office and need everything fast, offline-ready, and in their pocket.",
+    before: "Multiple apps, paper notes, and long message threads just to manage a normal working day. Time lost to admin was time stolen from clients.",
+    after: "One app for scheduling, client records, and daily operations — clean, fast, and designed for the field.",
     metrics: [
-      { v: "Mobile", l: "application" },
+      { v: "Mobile", l: "first" },
       { v: "iOS", l: "& Android" },
       { v: "Shipped", l: "product" },
     ],
@@ -55,12 +64,15 @@ const PROJECTS = [
   {
     id: "reabiliti",
     client: "Reabiliti",
-    title: "An industrial platform for rehabilitation management.",
+    title: "Digitizing industrial rehabilitation management.",
     year: "2024",
     tags: ["Industrial", "Platform", "Web"],
     liveUrl: "#",
+    live: false,
     screenshot: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
-    summary: "Reabiliti is an industrial project tackling rehabilitation management with a digital solution — streamlining processes that were previously manual and fragmented.",
+    summary: "Reabiliti replaces fragmented paper-based processes in industrial rehabilitation with a unified digital platform — one place for tracking, reporting, and coordination.",
+    before: "Patient records in paper files, sessions logged in separate Excel sheets, no live view of progress or outcomes.",
+    after: "A unified platform with patient journeys, session logs, and live reporting — always up to date, always accessible.",
     metrics: [
       { v: "Industrial", l: "sector" },
       { v: "Web", l: "platform" },
@@ -72,13 +84,17 @@ const PROJECTS = [
 
 function ProjectMock({ p }) {
   const [a, b, c] = p.palette;
+  const mockUrl = p.liveUrl && p.liveUrl !== "#"
+    ? p.liveUrl.replace(/^https?:\/\//, "")
+    : `${p.id}.nexora`;
+
   if (p.screenshot) {
-    const [a, b, c] = p.palette;
     return (
       <div className="proj-mock">
         <div className="proj-mock-chrome">
           <span /><span /><span />
-          <span className="proj-mock-url">{p.client.toLowerCase().replace(/\s+/g, "")}.nexora</span>
+          <span className="proj-mock-url">{mockUrl}</span>
+          {p.live && <span className="proj-mock-live-dot" />}
         </div>
         <div
           className="proj-mock-photo"
@@ -92,11 +108,12 @@ function ProjectMock({ p }) {
       </div>
     );
   }
+
   return (
     <div className="proj-mock" aria-hidden="true">
       <div className="proj-mock-chrome">
         <span /><span /><span />
-        <span className="proj-mock-url">{p.client.toLowerCase().replace(/\s+/g, "")}</span>
+        <span className="proj-mock-url">{mockUrl}</span>
       </div>
       <div
         className="proj-mock-surface"
@@ -164,8 +181,8 @@ function Projects() {
               Our <em className="serif">work</em> speaks.
             </h2>
             <p className="lede">
-              A selection of projects we built from scratch. Each one started
-              as an idea and ended as a live digital product.
+              Four products built from scratch — each one a real client,
+              a real problem, and a real product in the wild.
             </p>
           </div>
         </div>
@@ -181,6 +198,7 @@ function Projects() {
             >
               <span className="proj-tab-num">0{i + 1}</span>
               <span className="proj-tab-name">{pr.client}</span>
+              {pr.live && <span className="proj-tab-dot" />}
             </button>
           ))}
         </div>
@@ -191,18 +209,20 @@ function Projects() {
             <div className="proj-info-head">
               <span className="chip">{p.year}</span>
               {p.tags.map((t) => <span key={t} className="chip">{t}</span>)}
+              {p.live && <span className="chip accent">● Live</span>}
             </div>
+
             <h3 className="h-3 proj-title">{p.title}</h3>
             <p className="proj-summary">{p.summary}</p>
 
             <div className="proj-before-after">
               <div className="proj-ba">
                 <span className="proj-ba-label">before</span>
-                <p>Spreadsheets, scattered docs, hand-cranked handoffs. Growth bottlenecked by the founder.</p>
+                <p>{p.before}</p>
               </div>
               <div className="proj-ba">
                 <span className="proj-ba-label">after</span>
-                <p>One surface, one source of truth, automated where it matters and editorial where it counts.</p>
+                <p>{p.after}</p>
               </div>
             </div>
 
@@ -215,13 +235,13 @@ function Projects() {
               ))}
             </div>
 
-            <div className="proj-cta-row" style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <div className="proj-cta-row">
               {p.liveUrl && p.liveUrl !== "#" ? (
                 <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary proj-cta" data-cursor="hover">
                   View live <span className="arrow"><Arrow /></span>
                 </a>
               ) : (
-                <span className="btn btn-primary proj-cta is-disabled" style={{ opacity: 0.4, cursor: "default" }}>
+                <span className="btn btn-primary proj-cta is-disabled">
                   Link coming soon
                 </span>
               )}

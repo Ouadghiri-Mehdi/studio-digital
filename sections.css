@@ -456,15 +456,22 @@
 }
 .proj-tab:hover { color: var(--fg); background: var(--glass); }
 .proj-tab.is-active {
-  background: var(--fg);
-  color: var(--bg);
-  box-shadow: 0 4px 16px -4px oklch(0 0 0 / 0.35);
+  background: linear-gradient(135deg, var(--accent), var(--accent-b));
+  color: oklch(1 0 0);
+  box-shadow: 0 4px 20px -4px oklch(0.62 0.26 258 / 0.45);
 }
 .proj-tab-num {
   font-family: var(--mono);
   font-size: 9.5px;
   letter-spacing: 0.18em;
   opacity: 0.6;
+}
+.proj-tab-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+  flex-shrink: 0;
 }
 
 .proj-stage {
@@ -663,6 +670,18 @@
   margin-top: 3px;
 }
 .proj-cta { align-self: flex-start; }
+.proj-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn.is-disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+/* Live dot in browser chrome */
+.proj-mock-live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: oklch(0.72 0.20 145);
+  box-shadow: 0 0 8px oklch(0.72 0.20 145 / 0.6);
+  margin-left: auto;
+  flex-shrink: 0;
+}
 
 /* ===== PROCESS ===== */
 .process { position: relative; }
