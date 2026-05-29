@@ -5,25 +5,6 @@ const { useState: useStateProj } = React;
 
 const PROJECTS = [
   {
-    id: "ecommerce",
-    client: "E-Commerce App",
-    title: "A full e-commerce platform — web and mobile, end to end.",
-    year: "2025",
-    tags: ["Web", "Mobile", "E-Commerce"],
-    liveUrl: "#",
-    live: false,
-    screenshot: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
-    summary: "A complete online store built for scale — product catalog, cart, payments, and order management designed as a single cohesive experience across web and mobile.",
-    before: "Products listed on WhatsApp, payments via wire transfer, orders tracked in a notebook. Scaling was impossible.",
-    after: "A full storefront: catalog, cart, checkout, and order history — live on web and mobile, with no manual steps.",
-    metrics: [
-      { v: "Web", l: "& mobile" },
-      { v: "Full", l: "stack build" },
-      { v: "Live", l: "product" },
-    ],
-    palette: ["oklch(0.78 0.18 50)", "oklch(0.58 0.16 50)", "oklch(0.18 0.01 55)"],
-  },
-  {
     id: "madrastak",
     client: "Madrastak",
     title: "School management SaaS for Mauritanian private schools.",
@@ -31,35 +12,54 @@ const PROJECTS = [
     tags: ["SaaS", "EdTech", "Bilingual"],
     liveUrl: "https://madrastak.net",
     live: true,
-    screenshot: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
-    summary: "Madrastak centralizes everything a private school needs — grades, report cards, attendance, billing, and parent communication — in a bilingual platform purpose-built for Mauritania.",
+    screenshot: "assets/madrastak.png",
+    summary: "Madrastak centralizes everything a private school needs — grades, report cards, attendance, billing, and parent communication — in a bilingual Arabic/French platform purpose-built for Mauritania.",
     before: "Paper registers, scattered spreadsheets, WhatsApp calls for every parent update. Each report card season was a three-day manual ordeal.",
-    after: "Automated report cards, real-time attendance, integrated billing, and a parent portal. Over 3,000 bulletins generated in the first year.",
+    after: "Automated report cards, real-time attendance, integrated billing, and a parent portal. 320+ students and 22 teachers managed on one platform.",
     metrics: [
+      { v: "320+", l: "students managed" },
+      { v: "22", l: "teachers" },
       { v: "3,000+", l: "bulletins generated" },
-      { v: "1,000+", l: "students managed" },
-      { v: "94%", l: "attendance tracked" },
     ],
     palette: ["oklch(0.72 0.18 245)", "oklch(0.52 0.16 245)", "oklch(0.18 0.01 250)"],
   },
   {
-    id: "profnum",
-    client: "Prof Num",
-    title: "A mobile tool built for professionals in the field.",
-    year: "2024",
-    tags: ["Mobile", "iOS", "Android"],
+    id: "sidhub",
+    client: "SID Hub",
+    title: "AI-powered document management with intelligent search.",
+    year: "2025",
+    tags: ["AI", "Web", "SaaS"],
     liveUrl: "#",
     live: false,
-    screenshot: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80",
-    summary: "Prof Num puts professional-grade workflow tools in a mobile app — built for people who work outside the office and need everything fast, offline-ready, and in their pocket.",
-    before: "Multiple apps, paper notes, and long message threads just to manage a normal working day. Time lost to admin was time stolen from clients.",
-    after: "One app for scheduling, client records, and daily operations — clean, fast, and designed for the field.",
+    screenshot: "assets/gf.png",
+    summary: "SID Hub is a Smart Document Intelligence platform — upload PDFs, search with precision, and query your documents through JBot, an integrated AI assistant that answers instantly.",
+    before: "Documents scattered across folders and email threads. Finding a specific clause or data point meant opening dozens of files manually.",
+    after: "One hub: upload, search, and ask questions in natural language. JBot gives instant answers from any document in the library.",
     metrics: [
-      { v: "Mobile", l: "first" },
-      { v: "iOS", l: "& Android" },
-      { v: "Shipped", l: "product" },
+      { v: "AI", l: "search engine" },
+      { v: "JBot", l: "AI assistant" },
+      { v: "Web", l: "SaaS platform" },
     ],
-    palette: ["oklch(0.72 0.18 295)", "oklch(0.52 0.16 295)", "oklch(0.18 0.01 290)"],
+    palette: ["oklch(0.55 0.18 245)", "oklch(0.40 0.16 255)", "oklch(0.13 0.015 240)"],
+  },
+  {
+    id: "outpost",
+    client: "Outpost",
+    title: "A mobile marketplace connecting buyers and stores worldwide.",
+    year: "2025",
+    tags: ["Mobile", "iOS", "Marketplace"],
+    liveUrl: "#",
+    live: false,
+    screenshot: "assets/outpost.png",
+    summary: "Outpost is a multi-store mobile marketplace — browse partner stores, order from any URL, track shipments in real time, and shop from anywhere in the world from one app.",
+    before: "Shopping from multiple stores meant juggling separate apps, accounts, and delivery trackers. No unified experience.",
+    after: "One app: browse stores, order from any URL, track shipments live, and manage all orders in a single clean interface.",
+    metrics: [
+      { v: "Mobile", l: "iOS app" },
+      { v: "Multi", l: "store marketplace" },
+      { v: "Live", l: "shipment tracking" },
+    ],
+    palette: ["oklch(0.78 0.12 60)", "oklch(0.58 0.10 55)", "oklch(0.16 0.01 50)"],
   },
   {
     id: "reabiliti",
@@ -84,9 +84,10 @@ const PROJECTS = [
 
 function ProjectMock({ p }) {
   const [a, b, c] = p.palette;
+  const domainMap = { sidhub: "sidhub.app", outpost: "outpost.store", reabiliti: "reabiliti.io", profnum: "profnum.app" };
   const mockUrl = p.liveUrl && p.liveUrl !== "#"
     ? p.liveUrl.replace(/^https?:\/\//, "")
-    : `${p.id}.nexora`;
+    : (domainMap[p.id] || `${p.id}.nexora`);
 
   if (p.screenshot) {
     return (
