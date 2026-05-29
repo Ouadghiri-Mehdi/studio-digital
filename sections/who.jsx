@@ -73,7 +73,7 @@ function WhoWeAre() {
             role="full-stack · AI development"
             bio="Full-stack engineer specialized in AI development and innovative digital creation. Builds scalable systems and crafts the experiences that turn ambitious ideas into live, working products."
             focus={["Full-Stack Development", "AI Development", "Innovation", "Creation"]}
-            photoStyle={{ transform: "scale(1.9)", transformOrigin: "center 18%" }}
+            photoStyle={{ transform: "scale(1.9)", transformOrigin: "center 5%" }}
           />
         </div>
 
